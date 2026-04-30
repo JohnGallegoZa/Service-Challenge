@@ -54,7 +54,6 @@ class FileChannel(NotificationChannel):
     def send(self, message: str) -> None:
         if not self.is_available():
             raise ChannelUnavailableError("Canal no disponible")
-
         pass
 
 
@@ -67,6 +66,21 @@ class MockChannel(NotificationChannel):
 
     def send(self, message: str) -> None:
         raise ChannelUnavailableError("Error: canal Mock")
+
+
+class NotificationService:
+    def __init__(self, channel: NotificationChannel):
+        self._channel = channel
+        self._history : list[str]= []
+
+    def send_notification(self, message: str) -> None:
+        if not self._channel.is_available():
+            raise ChannelUnavailableError("No esta disponible")
+
+        self._channel.send(message)
+        self._history.append(message)
+
+
 
 
 
